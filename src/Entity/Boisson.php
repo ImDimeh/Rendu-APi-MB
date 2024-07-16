@@ -8,32 +8,54 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Post;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ApiResource()]
+#[Get()]
+#[GetCollection()]
+#[Patch()]
+#[Delete()]
+#[Post(security: "is_granted('ROLE_ADMIN')")]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read']],
+    denormalizationContext: ['groups' => ['write']],
+    forceEager: false
+)]
 #[ORM\Entity(repositoryClass: BoissonRepository::class)]
 class Boisson
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups('read')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['read', 'write'])]
     private ?string $Nom = null;
 
     #[ORM\Column]
+    #[Groups(['read', 'write'])]
     private ?int $Prix = null;
 
     /**
      * @var Collection<int, Media>
      */
     #[ORM\ManyToMany(targetEntity: Media::class, inversedBy: 'boissons')]
+    #[Groups(['read', 'write'])]
     private Collection $photo;
 
     /**
      * @var Collection<int, Commande>
      */
     #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'BoissonCommandé')]
+    #[Groups(['read', 'write'])]
     private Collection $commandes;
 
     public function __construct()
