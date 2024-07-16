@@ -16,6 +16,9 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
+
+
 class ServerController extends AbstractController
 {
     #[Route('/api/commandes', name: 'create_commande', methods: ['POST'])]
