@@ -14,13 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Security;
+
 
 class CommandController extends AbstractController
 {
     private $entityManager;
     private $security;
 
-    public function __construct(EntityManagerInterface $entityManager,  $security)
+    public function __construct(EntityManagerInterface $entityManager, Security $security)
     {
         $this->entityManager = $entityManager;
         $this->security = $security;
